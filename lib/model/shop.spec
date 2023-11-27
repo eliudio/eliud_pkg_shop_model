@@ -22,7 +22,7 @@
   },
   "codeToCollectReferences": "    var products = await productRepository(appId: appId)!.valuesListWithDetails(eliudQuery: EliudQuery(theConditions: [\n      EliudQueryCondition('shopId', isEqualTo: documentID),\n    ]));\n    referencesCollector.addAll(products.map((product) => ModelReference(ProductModel.packageName, ProductModel.id, product!)));",
   "extraImports": {
-    "model": "import 'package:eliud_core/tools/query/query_tools.dart';"
+    "model": "import 'package:eliud_core_helpers/query/query_tools.dart';"
   },
   "fields": [
     {
@@ -79,5 +79,5 @@
     "title": "Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID))",
     "subTitle": "Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.description!))"
   },
-  "depends": ["eliud_core"]
+  "depends": ["eliud_core_main"]
 }

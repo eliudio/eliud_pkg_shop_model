@@ -15,7 +15,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:eliud_core/model/model_export.dart';
+import 'package:eliud_core_main/model/model_export.dart';
 import 'package:eliud_pkg_shop_model/model/model_export.dart';
 
 @immutable

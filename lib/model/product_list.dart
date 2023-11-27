@@ -13,25 +13,23 @@
 
 */
 
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
-import 'package:eliud_core/core/blocs/access/state/access_state.dart';
-import 'package:eliud_core/core/blocs/access/state/access_determined.dart';
-import 'package:eliud_core_model/style/style_registry.dart';
-import 'package:eliud_core/tools/has_fab.dart';
+import 'package:eliud_core_main/apis/apis.dart';
+import 'package:eliud_core_main/tools/route_builders/route_builders.dart';
+import 'package:eliud_core_main/apis/style/style_registry.dart';
+import 'package:eliud_core_helpers/tools/has_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core_model/model/background_model.dart';
-import 'package:eliud_core/tools/delete_snackbar.dart';
-import 'package:eliud_core/tools/router_builders.dart';
-import 'package:eliud_core/tools/etc.dart';
-import 'package:eliud_core/tools/enums.dart';
+import 'package:eliud_core_main/model/background_model.dart';
+import 'package:eliud_core_helpers/tools/delete_snackbar.dart';
+import 'package:eliud_core_main/tools/etc/etc.dart';
+import 'package:eliud_core_helpers/etc/enums.dart';
 
 import 'package:eliud_pkg_shop_model/model/product_list_event.dart';
 import 'package:eliud_pkg_shop_model/model/product_list_state.dart';
 import 'package:eliud_pkg_shop_model/model/product_list_bloc.dart';
 import 'package:eliud_pkg_shop_model/model/product_model.dart';
 
-import 'package:eliud_core_model/model/app_model.dart';
+import 'package:eliud_core_main/model/app_model.dart';
 
 import 'product_form.dart';
 
@@ -64,14 +62,17 @@ class ProductListWidget extends StatefulWidget with HasFab {
   Widget? fab(BuildContext context) {
     if ((readOnly != null) && readOnly!) return null;
     var state = ProductListWidgetState();
-    var accessState = AccessBloc.getState(context);
-    return state.fab(context, accessState);
+    return state.fab(
+      context,
+    );
   }
 }
 
 class ProductListWidgetState extends State<ProductListWidget> {
-  Widget? fab(BuildContext aContext, AccessState accessState) {
-    return !accessState.memberIsOwner(widget.app.documentID)
+  Widget? fab(BuildContext aContext) {
+    return !Apis.apis()
+            .getCoreApi()
+            .memberIsOwner(context, widget.app.documentID)
         ? null
         : StyleRegistry.registry()
             .styleWithApp(widget.app)
@@ -97,73 +98,76 @@ class ProductListWidgetState extends State<ProductListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AccessBloc, AccessState>(
-        builder: (context, accessState) {
-      if (accessState is AccessDetermined) {
-        return BlocBuilder<ProductListBloc, ProductListState>(
-            builder: (context, state) {
-          if (state is ProductListLoading) {
-            return StyleRegistry.registry()
+    return Apis.apis().getCoreApi().buildWhenAccessDetermined(widget.app,
+        (context) {
+      return BlocBuilder<ProductListBloc, ProductListState>(
+          builder: (context, state) {
+        if (state is ProductListLoading) {
+          return StyleRegistry.registry()
+              .styleWithApp(widget.app)
+              .adminListStyle()
+              .progressIndicator(widget.app, context);
+        } else if (state is ProductListLoaded) {
+          final values = state.values;
+          if ((widget.isEmbedded != null) && widget.isEmbedded!) {
+            var children = <Widget>[];
+            children.add(theList(
+              context,
+              values,
+            ));
+            children.add(StyleRegistry.registry()
                 .styleWithApp(widget.app)
-                .adminListStyle()
-                .progressIndicator(widget.app, context);
-          } else if (state is ProductListLoaded) {
-            final values = state.values;
-            if ((widget.isEmbedded != null) && widget.isEmbedded!) {
-              var children = <Widget>[];
-              children.add(theList(context, values, accessState));
-              children.add(StyleRegistry.registry()
-                  .styleWithApp(widget.app)
-                  .adminFormStyle()
-                  .button(
-                widget.app,
-                context,
-                label: 'Add',
-                onPressed: () {
-                  Navigator.of(context).push(
-                    pageRouteBuilder(widget.app,
-                        page: BlocProvider.value(
-                            value: BlocProvider.of<ProductListBloc>(context),
-                            child: ProductForm(
-                                app: widget.app,
-                                value: null,
-                                formAction: FormAction.addAction))),
-                  );
-                },
-              ));
-              return ListView(
-                  padding: const EdgeInsets.all(8),
-                  physics: ScrollPhysics(),
-                  shrinkWrap: true,
-                  children: children);
-            } else {
-              return theList(context, values, accessState);
-            }
+                .adminFormStyle()
+                .button(
+              widget.app,
+              context,
+              label: 'Add',
+              onPressed: () {
+                Navigator.of(context).push(
+                  pageRouteBuilder(widget.app,
+                      page: BlocProvider.value(
+                          value: BlocProvider.of<ProductListBloc>(context),
+                          child: ProductForm(
+                              app: widget.app,
+                              value: null,
+                              formAction: FormAction.addAction))),
+                );
+              },
+            ));
+            return ListView(
+                padding: const EdgeInsets.all(8),
+                physics: ScrollPhysics(),
+                shrinkWrap: true,
+                children: children);
           } else {
-            return StyleRegistry.registry()
-                .styleWithApp(widget.app)
-                .adminListStyle()
-                .progressIndicator(widget.app, context);
+            return theList(
+              context,
+              values,
+            );
           }
-        });
-      } else {
-        return StyleRegistry.registry()
-            .styleWithApp(widget.app)
-            .adminListStyle()
-            .progressIndicator(widget.app, context);
-      }
+        } else {
+          return StyleRegistry.registry()
+              .styleWithApp(widget.app)
+              .adminListStyle()
+              .progressIndicator(widget.app, context);
+        }
+      });
     });
   }
 
-  Widget theList(BuildContext context, values, AccessState accessState) {
+  Widget theList(
+    BuildContext context,
+    values,
+  ) {
+    var member = Apis.apis().getCoreApi().getMember(context);
     return Container(
         decoration: widget.listBackground == null
             ? StyleRegistry.registry()
                 .styleWithApp(widget.app)
                 .adminListStyle()
-                .boxDecorator(widget.app, context, accessState.getMember())
+                .boxDecorator(widget.app, context, member)
             : BoxDecorationHelper.boxDecoration(
-                widget.app, accessState.getMember(), widget.listBackground),
+                widget.app, member, widget.listBackground),
         child: ListView.separated(
             separatorBuilder: (context, index) => StyleRegistry.registry()
                 .styleWithApp(widget.app)

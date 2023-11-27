@@ -13,16 +13,16 @@
 
 */
 
-import 'package:eliud_core/core/base/model_base.dart';
+import 'package:eliud_core_helpers/base/model_base.dart';
 
 import 'package:eliud_pkg_shop_model/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/model/model_export.dart';
+import 'package:eliud_core_main/model/model_export.dart';
 import 'package:eliud_pkg_shop_model/model/model_export.dart';
 import 'package:eliud_pkg_shop_model/model/entity_export.dart';
 
 import 'package:eliud_pkg_shop_model/model/shop_entity.dart';
 
-import 'package:eliud_core_model/tools/query/query_tools.dart';
+import 'package:eliud_core_helpers/query/query_tools.dart';
 
 class ShopModel implements ModelBase, WithAppId {
   static const String packageName = 'eliud_pkg_shop_model';

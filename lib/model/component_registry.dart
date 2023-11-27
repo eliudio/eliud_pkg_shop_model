@@ -14,10 +14,10 @@
 */
 
 import '../model/internal_component.dart';
-import 'package:eliud_core/core/registry.dart';
-import 'package:eliud_core_model/tools/component/component_spec.dart';
+import 'package:eliud_core_main/apis/registryapi/component/component_spec.dart';
 import 'abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/component/component_constructor.dart';
+import 'package:eliud_core_main/apis/registryapi/component/component_constructor.dart';
+import 'package:eliud_core_main/apis/apis.dart';
 
 import 'cart_component_selector.dart';
 import 'order_overview_component_selector.dart';
@@ -47,7 +47,7 @@ class ComponentRegistry {
     ComponentConstructor shopFrontComponentConstructorDefault,
     ComponentEditorConstructor shopFrontComponentEditorConstructor,
   ) {
-    Apis.apis().addInternalComponents('eliud_pkg_shop_model', [
+    Apis.apis().getRegistryApi().addInternalComponents('eliud_pkg_shop_model', [
       "carts",
       "orders",
       "orderOverviews",
@@ -59,40 +59,45 @@ class ComponentRegistry {
       "shopFronts",
     ]);
 
-    Apis.apis().register(
+    Apis.apis().getRegistryApi().register(
         componentName: "eliud_pkg_shop_model_internalWidgets",
         componentConstructor: ListComponentFactory());
     Apis.apis()
+        .getRegistryApi()
         .addDropDownSupporter("carts", DropdownButtonComponentFactory());
-    Apis.apis().register(
+    Apis.apis().getRegistryApi().register(
         componentName: "carts",
         componentConstructor: cartComponentConstructorDefault);
-    Apis.apis().addDropDownSupporter(
+    Apis.apis().getRegistryApi().addDropDownSupporter(
         "orderOverviews", DropdownButtonComponentFactory());
-    Apis.apis().register(
+    Apis.apis().getRegistryApi().register(
         componentName: "orderOverviews",
         componentConstructor: orderOverviewComponentConstructorDefault);
     Apis.apis()
+        .getRegistryApi()
         .addDropDownSupporter("pays", DropdownButtonComponentFactory());
-    Apis.apis().register(
+    Apis.apis().getRegistryApi().register(
         componentName: "pays",
         componentConstructor: payComponentConstructorDefault);
-    Apis.apis().addDropDownSupporter(
+    Apis.apis().getRegistryApi().addDropDownSupporter(
         "payConfirmations", DropdownButtonComponentFactory());
-    Apis.apis().register(
+    Apis.apis().getRegistryApi().register(
         componentName: "payConfirmations",
         componentConstructor: payConfirmationComponentConstructorDefault);
-    Apis.apis().addDropDownSupporter(
+    Apis.apis().getRegistryApi().addDropDownSupporter(
         "productDisplays", DropdownButtonComponentFactory());
-    Apis.apis().register(
+    Apis.apis().getRegistryApi().register(
         componentName: "productDisplays",
         componentConstructor: productDisplayComponentConstructorDefault);
     Apis.apis()
+        .getRegistryApi()
         .addDropDownSupporter("shopFronts", DropdownButtonComponentFactory());
-    Apis.apis().register(
+    Apis.apis().getRegistryApi().register(
         componentName: "shopFronts",
         componentConstructor: shopFrontComponentConstructorDefault);
-    Apis.apis().addComponentSpec('eliud_pkg_shop_model', 'shop', [
+    Apis.apis()
+        .getRegistryApi()
+        .addComponentSpec('eliud_pkg_shop_model', 'shop', [
       ComponentSpec(
           'carts',
           cartComponentConstructorDefault,
@@ -130,33 +135,45 @@ class ComponentRegistry {
           shopFrontComponentEditorConstructor,
           ({String? appId}) => shopFrontRepository(appId: appId)!),
     ]);
-    Apis.apis().registerRetrieveRepository('eliud_pkg_shop_model',
-        'carts', ({String? appId}) => cartRepository(appId: appId)!);
-    Apis.apis().registerRetrieveRepository(
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
+        'eliud_pkg_shop_model',
+        'carts',
+        ({String? appId}) => cartRepository(appId: appId)!);
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
         'eliud_pkg_shop_model',
         'memberCarts',
         ({String? appId}) => memberCartRepository(appId: appId)!);
-    Apis.apis().registerRetrieveRepository('eliud_pkg_shop_model',
-        'orders', ({String? appId}) => orderRepository(appId: appId)!);
-    Apis.apis().registerRetrieveRepository(
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
+        'eliud_pkg_shop_model',
+        'orders',
+        ({String? appId}) => orderRepository(appId: appId)!);
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
         'eliud_pkg_shop_model',
         'orderOverviews',
         ({String? appId}) => orderOverviewRepository(appId: appId)!);
-    Apis.apis().registerRetrieveRepository('eliud_pkg_shop_model',
-        'pays', ({String? appId}) => payRepository(appId: appId)!);
-    Apis.apis().registerRetrieveRepository(
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
+        'eliud_pkg_shop_model',
+        'pays',
+        ({String? appId}) => payRepository(appId: appId)!);
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
         'eliud_pkg_shop_model',
         'payConfirmations',
         ({String? appId}) => payConfirmationRepository(appId: appId)!);
-    Apis.apis().registerRetrieveRepository('eliud_pkg_shop_model',
-        'products', ({String? appId}) => productRepository(appId: appId)!);
-    Apis.apis().registerRetrieveRepository(
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
+        'eliud_pkg_shop_model',
+        'products',
+        ({String? appId}) => productRepository(appId: appId)!);
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
         'eliud_pkg_shop_model',
         'productDisplays',
         ({String? appId}) => productDisplayRepository(appId: appId)!);
-    Apis.apis().registerRetrieveRepository('eliud_pkg_shop_model',
-        'shops', ({String? appId}) => shopRepository(appId: appId)!);
-    Apis.apis().registerRetrieveRepository('eliud_pkg_shop_model',
-        'shopFronts', ({String? appId}) => shopFrontRepository(appId: appId)!);
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
+        'eliud_pkg_shop_model',
+        'shops',
+        ({String? appId}) => shopRepository(appId: appId)!);
+    Apis.apis().getRegistryApi().registerRetrieveRepository(
+        'eliud_pkg_shop_model',
+        'shopFronts',
+        ({String? appId}) => shopFrontRepository(appId: appId)!);
   }
 }

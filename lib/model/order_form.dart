@@ -13,22 +13,22 @@
 
 */
 
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core/core/blocs/access/state/access_state.dart';
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core_main/model/app_model.dart';
 import '../tools/bespoke_models.dart';
-import 'package:eliud_core/core/navigate/router.dart' as eliudrouter;
-import 'package:eliud_core/tools/screen_size.dart';
+import 'package:eliud_core_main/apis/action_api/action_model.dart';
+
+import 'package:eliud_core_main/apis/apis.dart';
+
+import 'package:eliud_core_helpers/etc/screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core_model/style/style_registry.dart';
-
-import 'package:eliud_core/model/internal_component.dart';
+import 'package:eliud_core_main/apis/style/style_registry.dart';
+import 'package:eliud_core_main/model/internal_component.dart';
 import 'package:eliud_pkg_shop_model/model/embedded_component.dart';
 
-import 'package:eliud_core/tools/enums.dart';
+import 'package:eliud_core_helpers/etc/enums.dart';
 
-import 'package:eliud_core/model/model_export.dart';
+import 'package:eliud_core_main/model/model_export.dart';
 import 'package:eliud_pkg_shop_model/model/model_export.dart';
 
 import 'package:eliud_pkg_shop_model/model/order_list_bloc.dart';
@@ -182,7 +182,6 @@ class _MyOrderFormState extends State<_MyOrderForm> {
 
   @override
   Widget build(BuildContext context) {
-    var accessState = AccessBloc.getState(context);
     return BlocBuilder<OrderFormBloc, OrderFormState>(
         builder: (context, state) {
       if (state is OrderFormUninitialized) {
@@ -281,7 +280,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Name',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _nameController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -294,7 +293,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'email',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _emailController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -363,7 +362,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Price',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _totalPriceController,
                 keyboardType: TextInputType.number,
                 validator: (_) =>
@@ -376,7 +375,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Currency',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _currencyController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -403,7 +402,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Payment Reference',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _paymentReferenceController,
                 keyboardType: TextInputType.text,
                 validator: (_) => state is PaymentReferenceOrderFormError
@@ -417,7 +416,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Shipment Reference',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipmentReferenceController,
                 keyboardType: TextInputType.text,
                 validator: (_) => state is ShipmentReferenceOrderFormError
@@ -431,7 +430,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Dilvery Reference',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _deliveryReferenceController,
                 keyboardType: TextInputType.text,
                 validator: (_) => state is DeliveryReferenceOrderFormError
@@ -459,7 +458,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Payment Note',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _paymentNoteController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -472,7 +471,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Shipment Note',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipmentNoteController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -485,7 +484,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Dilvery Note',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _deliveryNoteController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -512,7 +511,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Street Address',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipStreet1Controller,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -525,7 +524,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Street Address Line 2',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipStreet2Controller,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -538,7 +537,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'City',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipCityController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -551,7 +550,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'State/Province',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipStateController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -564,7 +563,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Postal / Zip Code',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _postcodeController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -591,7 +590,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
             .textFormField(widget.app, context,
                 labelText: 'Country',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _countryController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -623,7 +622,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
                 context,
                 'Invoice address same as shipping address',
                 _invoiceSameSelection,
-                _readOnly(accessState, state)
+                _readOnly(context, state)
                     ? null
                     : (dynamic val) => setSelectionInvoiceSame(val)));
 
@@ -635,7 +634,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
               .textFormField(widget.app, context,
                   labelText: 'Street Address',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceStreet1Controller,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoiceStreet1OrderFormError
@@ -652,7 +651,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
               .textFormField(widget.app, context,
                   labelText: 'Street Address Line 2',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceStreet2Controller,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoiceStreet2OrderFormError
@@ -669,7 +668,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
               .textFormField(widget.app, context,
                   labelText: 'City',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceCityController,
                   keyboardType: TextInputType.text,
                   validator: (_) =>
@@ -685,7 +684,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
               .textFormField(widget.app, context,
                   labelText: 'State/Province',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceStateController,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoiceStateOrderFormError
@@ -702,7 +701,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
               .textFormField(widget.app, context,
                   labelText: 'Postal / Zip Code',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoicePostcodeController,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoicePostcodeOrderFormError
@@ -719,7 +718,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
               .textFormField(widget.app, context,
                   labelText: 'Country',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceCountryController,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoiceCountryOrderFormError
@@ -769,7 +768,9 @@ class _MyOrderFormState extends State<_MyOrderForm> {
                 _statusSelectedRadioTile,
                 'ordered',
                 'ordered',
-                !accessState.memberIsOwner(widget.app.documentID)
+                !Apis.apis()
+                        .getCoreApi()
+                        .memberIsOwner(context, widget.app.documentID)
                     ? null
                     : (dynamic val) => setSelectionStatus(val)));
         children.add(StyleRegistry.registry()
@@ -782,7 +783,9 @@ class _MyOrderFormState extends State<_MyOrderForm> {
                 _statusSelectedRadioTile,
                 'paid',
                 'paid',
-                !accessState.memberIsOwner(widget.app.documentID)
+                !Apis.apis()
+                        .getCoreApi()
+                        .memberIsOwner(context, widget.app.documentID)
                     ? null
                     : (dynamic val) => setSelectionStatus(val)));
         children.add(StyleRegistry.registry()
@@ -795,7 +798,9 @@ class _MyOrderFormState extends State<_MyOrderForm> {
                 _statusSelectedRadioTile,
                 'paymentFailed',
                 'paymentFailed',
-                !accessState.memberIsOwner(widget.app.documentID)
+                !Apis.apis()
+                        .getCoreApi()
+                        .memberIsOwner(context, widget.app.documentID)
                     ? null
                     : (dynamic val) => setSelectionStatus(val)));
         children.add(StyleRegistry.registry()
@@ -808,7 +813,9 @@ class _MyOrderFormState extends State<_MyOrderForm> {
                 _statusSelectedRadioTile,
                 'shipped',
                 'shipped',
-                !accessState.memberIsOwner(widget.app.documentID)
+                !Apis.apis()
+                        .getCoreApi()
+                        .memberIsOwner(context, widget.app.documentID)
                     ? null
                     : (dynamic val) => setSelectionStatus(val)));
         children.add(StyleRegistry.registry()
@@ -821,7 +828,9 @@ class _MyOrderFormState extends State<_MyOrderForm> {
                 _statusSelectedRadioTile,
                 'delivered',
                 'delivered',
-                !accessState.memberIsOwner(widget.app.documentID)
+                !Apis.apis()
+                        .getCoreApi()
+                        .memberIsOwner(context, widget.app.documentID)
                     ? null
                     : (dynamic val) => setSelectionStatus(val)));
 
@@ -840,7 +849,7 @@ class _MyOrderFormState extends State<_MyOrderForm> {
                 widget.app,
                 context,
                 label: 'Submit',
-                onPressed: _readOnly(accessState, state)
+                onPressed: _readOnly(context, state)
                     ? null
                     : () {
                         if (state is OrderFormError) {
@@ -916,8 +925,9 @@ class _MyOrderFormState extends State<_MyOrderForm> {
                             )));
                           }
                           if (widget.submitAction != null) {
-                            eliudrouter.Router.navigateTo(
-                                context, widget.submitAction!);
+                            Apis.apis()
+                                .getRouterApi()
+                                .navigateTo(context, widget.submitAction!);
                           } else {
                             Navigator.pop(context);
                           }
@@ -1114,10 +1124,12 @@ class _MyOrderFormState extends State<_MyOrderForm> {
   }
 
   /// Is the form read-only?
-  bool _readOnly(AccessState accessState, OrderFormInitialized state) {
+  bool _readOnly(BuildContext context, OrderFormInitialized state) {
     return (formAction == FormAction.showData) ||
         (formAction == FormAction.showPreloadedData) ||
-        (!accessState.memberIsOwner(widget.app.documentID));
+        (!Apis.apis()
+            .getCoreApi()
+            .memberIsOwner(context, widget.app.documentID));
   }
 }
 
@@ -1246,7 +1258,6 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
 
   @override
   Widget build(BuildContext context) {
-    var accessState = AccessBloc.getState(context);
     return BlocBuilder<OrderFormBloc, OrderFormState>(
         builder: (context, state) {
       if (state is OrderFormUninitialized) {
@@ -1311,7 +1322,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
             .textFormField(widget.app, context,
                 labelText: 'Name',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _nameController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -1338,7 +1349,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
             .textFormField(widget.app, context,
                 labelText: 'Price',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _totalPriceController,
                 keyboardType: TextInputType.number,
                 validator: (_) =>
@@ -1351,7 +1362,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
             .textFormField(widget.app, context,
                 labelText: 'Currency',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _currencyController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -1378,7 +1389,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
             .textFormField(widget.app, context,
                 labelText: 'Street Address',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipStreet1Controller,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -1391,7 +1402,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
             .textFormField(widget.app, context,
                 labelText: 'Street Address Line 2',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipStreet2Controller,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -1404,7 +1415,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
             .textFormField(widget.app, context,
                 labelText: 'City',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipCityController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -1417,7 +1428,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
             .textFormField(widget.app, context,
                 labelText: 'State/Province',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipStateController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -1430,7 +1441,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
             .textFormField(widget.app, context,
                 labelText: 'Postal / Zip Code',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _postcodeController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -1457,7 +1468,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
             .textFormField(widget.app, context,
                 labelText: 'Country',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _countryController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -1489,7 +1500,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
                 context,
                 'Invoice address same as shipping address',
                 _invoiceSameSelection,
-                _readOnly(accessState, state)
+                _readOnly(context, state)
                     ? null
                     : (dynamic val) => setSelectionInvoiceSame(val)));
 
@@ -1501,7 +1512,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
               .textFormField(widget.app, context,
                   labelText: 'Street Address',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceStreet1Controller,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoiceStreet1OrderFormError
@@ -1518,7 +1529,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
               .textFormField(widget.app, context,
                   labelText: 'Street Address Line 2',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceStreet2Controller,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoiceStreet2OrderFormError
@@ -1535,7 +1546,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
               .textFormField(widget.app, context,
                   labelText: 'City',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceCityController,
                   keyboardType: TextInputType.text,
                   validator: (_) =>
@@ -1551,7 +1562,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
               .textFormField(widget.app, context,
                   labelText: 'State/Province',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceStateController,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoiceStateOrderFormError
@@ -1568,7 +1579,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
               .textFormField(widget.app, context,
                   labelText: 'Postal / Zip Code',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoicePostcodeController,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoicePostcodeOrderFormError
@@ -1585,7 +1596,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
               .textFormField(widget.app, context,
                   labelText: 'Country',
                   icon: Icons.text_format,
-                  readOnly: _readOnly(accessState, state),
+                  readOnly: _readOnly(context, state),
                   textEditingController: _invoiceCountryController,
                   keyboardType: TextInputType.text,
                   validator: (_) => state is InvoiceCountryOrderFormError
@@ -1626,7 +1637,7 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
                 widget.app,
                 context,
                 label: 'Submit',
-                onPressed: _readOnly(accessState, state)
+                onPressed: _readOnly(context, state)
                     ? null
                     : () {
                         if (state is OrderFormError) {
@@ -1680,8 +1691,9 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
                             )));
                           }
                           if (widget.submitAction != null) {
-                            eliudrouter.Router.navigateTo(
-                                context, widget.submitAction!);
+                            Apis.apis()
+                                .getRouterApi()
+                                .navigateTo(context, widget.submitAction!);
                           } else {
                             Navigator.pop(context);
                           }
@@ -1818,10 +1830,12 @@ class _MyOrderPaymentFormState extends State<_MyOrderPaymentForm> {
   }
 
   /// Is the form read-only?
-  bool _readOnly(AccessState accessState, OrderFormInitialized state) {
+  bool _readOnly(BuildContext context, OrderFormInitialized state) {
     return (formAction == FormAction.showData) ||
         (formAction == FormAction.showPreloadedData) ||
-        (!accessState.memberIsOwner(widget.app.documentID));
+        (!Apis.apis()
+            .getCoreApi()
+            .memberIsOwner(context, widget.app.documentID));
   }
 }
 
@@ -1919,7 +1933,6 @@ class _MyOrderShipmentFormState extends State<_MyOrderShipmentForm> {
 
   @override
   Widget build(BuildContext context) {
-    var accessState = AccessBloc.getState(context);
     return BlocBuilder<OrderFormBloc, OrderFormState>(
         builder: (context, state) {
       if (state is OrderFormUninitialized) {
@@ -1980,7 +1993,7 @@ class _MyOrderShipmentFormState extends State<_MyOrderShipmentForm> {
             .textFormField(widget.app, context,
                 labelText: 'Shipment Reference',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipmentReferenceController,
                 keyboardType: TextInputType.text,
                 validator: (_) => state is ShipmentReferenceOrderFormError
@@ -2008,7 +2021,7 @@ class _MyOrderShipmentFormState extends State<_MyOrderShipmentForm> {
             .textFormField(widget.app, context,
                 labelText: 'Shipment Note',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shipmentNoteController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -2030,7 +2043,7 @@ class _MyOrderShipmentFormState extends State<_MyOrderShipmentForm> {
                 widget.app,
                 context,
                 label: 'Submit',
-                onPressed: _readOnly(accessState, state)
+                onPressed: _readOnly(context, state)
                     ? null
                     : () {
                         if (state is OrderFormError) {
@@ -2056,8 +2069,9 @@ class _MyOrderShipmentFormState extends State<_MyOrderShipmentForm> {
                             )));
                           }
                           if (widget.submitAction != null) {
-                            eliudrouter.Router.navigateTo(
-                                context, widget.submitAction!);
+                            Apis.apis()
+                                .getRouterApi()
+                                .navigateTo(context, widget.submitAction!);
                           } else {
                             Navigator.pop(context);
                           }
@@ -2116,9 +2130,11 @@ class _MyOrderShipmentFormState extends State<_MyOrderShipmentForm> {
   }
 
   /// Is the form read-only?
-  bool _readOnly(AccessState accessState, OrderFormInitialized state) {
+  bool _readOnly(BuildContext context, OrderFormInitialized state) {
     return (formAction == FormAction.showData) ||
         (formAction == FormAction.showPreloadedData) ||
-        (!accessState.memberIsOwner(widget.app.documentID));
+        (!Apis.apis()
+            .getCoreApi()
+            .memberIsOwner(context, widget.app.documentID));
   }
 }

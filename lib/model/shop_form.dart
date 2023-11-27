@@ -13,18 +13,19 @@
 
 */
 
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core/core/blocs/access/state/access_state.dart';
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core_main/model/app_model.dart';
 import '../tools/bespoke_models.dart';
-import 'package:eliud_core/core/navigate/router.dart' as eliudrouter;
+import 'package:eliud_core_main/apis/action_api/action_model.dart';
+
+import 'package:eliud_core_main/apis/apis.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core_model/style/style_registry.dart';
+import 'package:eliud_core_main/apis/style/style_registry.dart';
 
-import 'package:eliud_core/tools/enums.dart';
+import 'package:eliud_core_helpers/etc/enums.dart';
 
-import 'package:eliud_core/model/model_export.dart';
+import 'package:eliud_core_main/model/model_export.dart';
 import 'package:eliud_pkg_shop_model/model/model_export.dart';
 
 import 'package:eliud_pkg_shop_model/model/shop_list_bloc.dart';
@@ -129,7 +130,6 @@ class _MyShopFormState extends State<_MyShopForm> {
 
   @override
   Widget build(BuildContext context) {
-    var accessState = AccessBloc.getState(context);
     return BlocBuilder<ShopFormBloc, ShopFormState>(builder: (context, state) {
       if (state is ShopFormUninitialized) {
         return Center(
@@ -190,7 +190,7 @@ class _MyShopFormState extends State<_MyShopForm> {
             .textFormField(widget.app, context,
                 labelText: 'description',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _descriptionController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -203,7 +203,7 @@ class _MyShopFormState extends State<_MyShopForm> {
             .textFormField(widget.app, context,
                 labelText: 'Short Description',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _shortDescriptionController,
                 keyboardType: TextInputType.text,
                 validator: (_) => state is ShortDescriptionShopFormError
@@ -217,7 +217,7 @@ class _MyShopFormState extends State<_MyShopForm> {
             .textFormField(widget.app, context,
                 labelText: 'Currency',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _currencyController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -239,7 +239,7 @@ class _MyShopFormState extends State<_MyShopForm> {
                 widget.app,
                 context,
                 label: 'Submit',
-                onPressed: _readOnly(accessState, state)
+                onPressed: _readOnly(context, state)
                     ? null
                     : () {
                         if (state is ShopFormError) {
@@ -269,8 +269,9 @@ class _MyShopFormState extends State<_MyShopForm> {
                             )));
                           }
                           if (widget.submitAction != null) {
-                            eliudrouter.Router.navigateTo(
-                                context, widget.submitAction!);
+                            Apis.apis()
+                                .getRouterApi()
+                                .navigateTo(context, widget.submitAction!);
                           } else {
                             Navigator.pop(context);
                           }
@@ -333,9 +334,11 @@ class _MyShopFormState extends State<_MyShopForm> {
   }
 
   /// Is the form read-only?
-  bool _readOnly(AccessState accessState, ShopFormInitialized state) {
+  bool _readOnly(BuildContext context, ShopFormInitialized state) {
     return (formAction == FormAction.showData) ||
         (formAction == FormAction.showPreloadedData) ||
-        (!accessState.memberIsOwner(widget.app.documentID));
+        (!Apis.apis()
+            .getCoreApi()
+            .memberIsOwner(context, widget.app.documentID));
   }
 }

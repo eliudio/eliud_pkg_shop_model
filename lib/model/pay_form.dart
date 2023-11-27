@@ -13,21 +13,21 @@
 
 */
 
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core/core/blocs/access/state/access_state.dart';
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core_main/model/app_model.dart';
 import '../tools/bespoke_models.dart';
-import 'package:eliud_core/core/navigate/router.dart' as eliudrouter;
+import 'package:eliud_core_main/apis/action_api/action_model.dart';
+
+import 'package:eliud_core_main/apis/apis.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core_model/style/style_registry.dart';
+import 'package:eliud_core_main/apis/style/style_registry.dart';
+import 'package:eliud_core_main/model/internal_component.dart';
+import 'package:eliud_core_main/tools/bespoke_formfields.dart';
 
-import 'package:eliud_core/model/internal_component.dart';
-import 'package:eliud_core/tools/bespoke_formfields.dart';
+import 'package:eliud_core_helpers/etc/enums.dart';
 
-import 'package:eliud_core/tools/enums.dart';
-
-import 'package:eliud_core/model/model_export.dart';
+import 'package:eliud_core_main/model/model_export.dart';
 import 'package:eliud_pkg_shop_model/model/model_export.dart';
 
 import 'package:eliud_pkg_shop_model/model/pay_list_bloc.dart';
@@ -128,7 +128,6 @@ class _MyPayFormState extends State<_MyPayForm> {
 
   @override
   Widget build(BuildContext context) {
-    var accessState = AccessBloc.getState(context);
     return BlocBuilder<PayFormBloc, PayFormState>(builder: (context, state) {
       if (state is PayFormUninitialized) {
         return Center(
@@ -177,7 +176,7 @@ class _MyPayFormState extends State<_MyPayForm> {
             .textFormField(widget.app, context,
                 labelText: 'Description',
                 icon: Icons.text_format,
-                readOnly: _readOnly(accessState, state),
+                readOnly: _readOnly(context, state),
                 textEditingController: _descriptionController,
                 keyboardType: TextInputType.text,
                 validator: (_) =>
@@ -267,7 +266,7 @@ class _MyPayFormState extends State<_MyPayForm> {
                 widget.app,
                 context,
                 label: 'Submit',
-                onPressed: _readOnly(accessState, state)
+                onPressed: _readOnly(context, state)
                     ? null
                     : () {
                         if (state is PayFormError) {
@@ -299,8 +298,9 @@ class _MyPayFormState extends State<_MyPayForm> {
                             )));
                           }
                           if (widget.submitAction != null) {
-                            eliudrouter.Router.navigateTo(
-                                context, widget.submitAction!);
+                            Apis.apis()
+                                .getRouterApi()
+                                .navigateTo(context, widget.submitAction!);
                           } else {
                             Navigator.pop(context);
                           }
@@ -363,9 +363,11 @@ class _MyPayFormState extends State<_MyPayForm> {
   }
 
   /// Is the form read-only?
-  bool _readOnly(AccessState accessState, PayFormInitialized state) {
+  bool _readOnly(BuildContext context, PayFormInitialized state) {
     return (formAction == FormAction.showData) ||
         (formAction == FormAction.showPreloadedData) ||
-        (!accessState.memberIsOwner(widget.app.documentID));
+        (!Apis.apis()
+            .getCoreApi()
+            .memberIsOwner(context, widget.app.documentID));
   }
 }

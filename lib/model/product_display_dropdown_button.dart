@@ -13,20 +13,22 @@
 
 */
 
-import 'package:eliud_core_model/model/app_model.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+//import 'package:eliud_core_model/package/packages.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core_model/style/style_registry.dart';
-import 'package:eliud_core_model/style/frontend/has_text.dart';
-import 'package:eliud_core_model/style/frontend/has_button.dart';
-import 'package:eliud_core_model/tools/query/query_tools.dart';
-import 'package:eliud_core/tools/component/update_component.dart';
+import 'package:eliud_core_main/apis/style/style_registry.dart';
+import 'package:eliud_core_main/apis/style/frontend/has_text.dart';
+import 'package:eliud_core_main/apis/style/frontend/has_button.dart';
+import 'package:eliud_core_helpers/query/query_tools.dart';
+import 'package:eliud_core_main/tools/component/update_component.dart';
 
 import 'package:eliud_pkg_shop_model/model/product_display_list_bloc.dart';
 import 'package:eliud_pkg_shop_model/model/product_display_list_state.dart';
 import 'package:eliud_pkg_shop_model/model/product_display_list_event.dart';
 import 'package:eliud_pkg_shop_model/model/product_display_model.dart';
+//import 'package:eliud_core_main/tools/component/update_component.dart';
 
 typedef ProductDisplayChanged = Function(
   String? value,

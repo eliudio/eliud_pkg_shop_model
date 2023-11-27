@@ -15,7 +15,7 @@
 
 import 'package:bloc/bloc.dart';
 
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
+import 'package:eliud_core_main/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_shop_model/model/model_export.dart';
 
 import 'package:eliud_pkg_shop_model/model/product_image_form_event.dart';

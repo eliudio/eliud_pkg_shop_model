@@ -14,7 +14,7 @@
 */
 
 import 'abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
+import 'package:eliud_core_main/tools/main_abstract_repository_singleton.dart';
 import 'dart:collection';
 import '../model/cart_firestore.dart';
 import '../model/cart_repository.dart';

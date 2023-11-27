@@ -17,9 +17,9 @@ import 'package:eliud_pkg_shop_model/model/model_export.dart';
 import 'package:eliud_pkg_shop_model/model/entity_export.dart';
 
 import 'dart:async';
-import 'package:eliud_core_model/tools/query/query_tools.dart';
-import 'package:eliud_core/tools/common_tools.dart';
-import 'package:eliud_core/core/base/repository_base.dart';
+import 'package:eliud_core_helpers/query/query_tools.dart';
+import 'package:eliud_core_helpers/helpers/common_tools.dart';
+import 'package:eliud_core_helpers/repository/repository_base.dart';
 
 typedef OrderModelTrigger = Function(List<OrderModel?> list);
 typedef OrderChanged = Function(OrderModel? value);

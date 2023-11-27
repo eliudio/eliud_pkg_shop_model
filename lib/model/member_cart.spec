@@ -60,5 +60,5 @@
     "title": "Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID))",
     "subTitle": "value.description != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.description!)) : Container()"
   },
-  "depends": ["eliud_core"]
+  "depends": ["eliud_core_main"]
 }

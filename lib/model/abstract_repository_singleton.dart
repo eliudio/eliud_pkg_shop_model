@@ -23,7 +23,7 @@ import '../model/product_repository.dart';
 import '../model/product_display_repository.dart';
 import '../model/shop_repository.dart';
 import '../model/shop_front_repository.dart';
-import 'package:eliud_core/package/package.dart';
+import 'package:eliud_core_main/tools/etc/member_collection_info.dart';
 
 CartRepository? cartRepository({String? appId}) =>
     AbstractRepositorySingleton.singleton.cartRepository(appId);

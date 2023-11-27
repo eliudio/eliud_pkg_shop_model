@@ -15,8 +15,8 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'package:eliud_core/core/base/entity_base.dart';
-import 'package:eliud_core/model/entity_export.dart';
+import 'package:eliud_core_helpers/base/entity_base.dart';
+import 'package:eliud_core_main/model/entity_export.dart';
 
 class ShopEntity implements EntityBase {
   final String? appId;

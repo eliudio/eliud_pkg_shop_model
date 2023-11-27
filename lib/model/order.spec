@@ -299,5 +299,5 @@
         "groups": [ "references", "notes" ]
     }
   ],
-  "depends": ["eliud_core"]
+  "depends": ["eliud_core_main"]
 }
